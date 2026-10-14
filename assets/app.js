@@ -8,12 +8,14 @@ const HOMEPAGE = '';
 // 향 정보 — 메인 목록은 향 넘버 순서
 // src를 비워두면 videos/{slug}.mp4 파일을 재생해요.
 // 다른 곳에 올린 영상을 쓰려면 src에 영상 주소를 넣으세요.
+// link에 주소를 넣으면 영상 대신 그 주소로 바로 이동해요. (QR은 그대로)
+//   예: 쇼핑몰 상품 페이지, 프로모션 페이지, 인스타그램 등. 비워두면 영상 재생.
 const SCENTS = [
-  { slug: 'bija',        name: 'Bija Forest',        ko: '비자 포레스트',   no: 'No.0574', time: '6:20 AM',  src: '' },
-  { slug: 'helen',       name: 'Helen Aqua',         ko: '헬렌 아쿠아',     no: 'No.1510', time: '11:10 AM', src: '' },
-  { slug: 'citrus',      name: 'Citrus Noble',       ko: '시트러스 노블',   no: 'No.1514', time: '7:40 AM',  src: '' },
-  { slug: 'hemish',      name: 'Hemish Bloom',       ko: '헤미쉬 블룸',     no: 'No.1515', time: '4:20 PM',  src: '' },
-  { slug: 'honeysuckle', name: 'Honey Suckle Fresh', ko: '허니써클 프레쉬', no: 'No.4035', time: '1:15 PM',  src: '' },
+  { slug: 'bija',        name: 'Bija Forest',        ko: '비자 포레스트',   no: 'No.0574', time: '6:20 AM',  src: '', link: '' },
+  { slug: 'helen',       name: 'Helen Aqua',         ko: '헬렌 아쿠아',     no: 'No.1510', time: '11:10 AM', src: '', link: '' },
+  { slug: 'citrus',      name: 'Citrus Noble',       ko: '시트러스 노블',   no: 'No.1514', time: '7:40 AM',  src: '', link: '' },
+  { slug: 'hemish',      name: 'Hemish Bloom',       ko: '헤미쉬 블룸',     no: 'No.1515', time: '4:20 PM',  src: '', link: '' },
+  { slug: 'honeysuckle', name: 'Honey Suckle Fresh', ko: '허니써클 프레쉬', no: 'No.4035', time: '1:15 PM',  src: '', link: '' },
 ];
 
 /* ========================================================== */
@@ -66,6 +68,11 @@ const SCENTS = [
   function openScent(slug, { withSound = false, push = false } = {}) {
     const s = bySlug[slug];
     if (!s) return;
+    if (s.link) {
+      // QR로 들어온 경우엔 뒤로가기에 이 페이지가 남지 않게 replace
+      if (push) location.href = s.link; else location.replace(s.link);
+      return;
+    }
     document.title = `${s.name} ${s.no} | INTHEMENTAL`;
 
     player.classList.remove('is-empty', 'ui-visible');
